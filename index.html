@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pensumtorget UiO</title>
+    <link rel="stylesheet" href="styles.css?v=20260520-stat-labels-no" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#browse" aria-label="Pensumtorget home">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="mark-book mark-book-left"></span>
+          <span class="mark-book mark-book-right"></span>
+        </span>
+        <span class="brand-copy">
+          <strong>Pensumtorget <span>UiO</span></strong>
+          <small data-i18n="brandTagline">Syllabus books, student to student</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary">
+          <a href="#browse" data-nav="browse" data-i18n="navBrowse">Browse</a>
+          <a href="#sell" data-nav="sell" data-i18n="navSell">Sell</a>
+          <a href="#dashboard" data-nav="dashboard" data-i18n="navDashboard">My listings</a>
+          <a href="#favorites" data-nav="favorites" data-i18n="navFavorites">My favourites</a>
+          <a href="#messages" data-nav="messages" data-i18n="navMessages">Messages</a>
+        </nav>
+        <div class="user-chip" id="user-chip" aria-label="Signed in user"></div>
+        <div class="language-toggle" aria-label="Language">
+          <button class="active" type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="no" aria-pressed="false">NO</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="market-toolbar" aria-labelledby="page-title">
+        <div class="toolbar-copy">
+          <p class="eyebrow" data-i18n="heroEyebrow">UiO courses, second-hand books, campus pickup</p>
+          <h1 id="page-title" data-i18n="heroTitle">Find syllabus books by course code.</h1>
+        </div>
+        <form class="search-shell" id="search-form" role="search">
+          <label class="visually-hidden" for="search-input" data-i18n="searchLabel">Search course, title, author, or seller</label>
+          <input
+            id="search-input"
+            type="search"
+            autocomplete="off"
+            placeholder="Search IN1000, EXPHIL03, book title..."
+          />
+          <button class="primary-button" type="submit" data-i18n="searchButton">Search</button>
+        </form>
+      </section>
+
+      <section class="stats-strip" aria-label="Marketplace snapshot">
+        <div>
+          <strong id="stat-listings">0</strong>
+          <span data-i18n="statActive">Active Listings</span>
+        </div>
+        <div>
+          <strong id="stat-courses">0</strong>
+          <span data-i18n="statCourses">Subjects with books</span>
+        </div>
+        <div>
+          <strong>94%</strong>
+          <span data-i18n="statVerified">UiO Verified Sellers</span>
+        </div>
+        <div>
+          <strong>Blindern</strong>
+          <span data-i18n="statPickup">Most Used Pickup Area</span>
+        </div>
+      </section>
+
+      <section id="browse-view" class="view active" aria-label="Browse books">
+        <aside class="filters" aria-label="Filters">
+          <div class="filter-block">
+            <div class="block-heading">
+              <h2 data-i18n="filterCourses">Courses</h2>
+              <button class="text-button" id="clear-course" type="button" data-i18n="clear">Clear</button>
+            </div>
+            <label class="stacked-filter" for="faculty-filter">
+              <span data-i18n="filterFaculty">Faculty</span>
+              <select id="faculty-filter" aria-label="Faculty">
+                <option value="all" data-i18n="allFaculties">All faculties</option>
+              </select>
+            </label>
+            <label class="stacked-filter" for="course-filter">
+              <span data-i18n="courseCode">Course code</span>
+              <select id="course-filter" aria-label="Course code">
+                <option value="" data-i18n="allCourses">All courses</option>
+              </select>
+            </label>
+            <label class="stacked-filter" for="semester-filter">
+              <span data-i18n="semester">Semester</span>
+              <select id="semester-filter" aria-label="Semester">
+                <option value="all" data-i18n="allSemesters">All semesters</option>
+                <option value="Spring 2026">Spring 2026</option>
+                <option value="Autumn 2026">Autumn 2026</option>
+              </select>
+            </label>
+            <div class="course-chip-list" id="course-chips"></div>
+          </div>
+
+          <div class="filter-block">
+            <h2 data-i18n="filterCondition">Condition</h2>
+            <label><input type="checkbox" name="condition" value="Like new" /> <span data-condition-label="Like new">Like new</span></label>
+            <label><input type="checkbox" name="condition" value="Used" /> <span data-condition-label="Used">Used</span></label>
+            <label><input type="checkbox" name="condition" value="Heavily used" /> <span data-condition-label="Heavily used">Heavily used</span></label>
+          </div>
+
+          <div class="filter-block">
+            <h2 data-i18n="filterPrice">Price</h2>
+            <label for="max-price" data-i18n="maxPrice">Maximum price</label>
+            <input id="max-price" type="range" min="100" max="900" step="50" value="900" />
+            <output id="max-price-output" for="max-price">900 kr</output>
+          </div>
+
+          <div class="filter-block">
+            <h2 data-i18n="filterPickup">Pickup</h2>
+            <select id="pickup-filter" aria-label="Pickup area">
+              <option value="all" data-i18n="allAreas">All areas</option>
+              <option value="Blindern">Blindern</option>
+              <option value="Sentrum">Sentrum</option>
+              <option value="Domus Juridica">Domus Juridica</option>
+              <option value="Forskningsparken">Forskningsparken</option>
+            </select>
+          </div>
+        </aside>
+
+        <section class="results-area" aria-live="polite">
+          <div class="results-heading">
+            <div>
+              <p class="eyebrow" data-i18n="availableNow">Available now</p>
+              <h2 id="results-title">All syllabus books</h2>
+            </div>
+            <select id="sort-select" aria-label="Sort listings">
+              <option value="recent" data-i18n="sortRecent">Newest first</option>
+              <option value="priceLow" data-i18n="sortPriceLow">Lowest price</option>
+              <option value="priceHigh" data-i18n="sortPriceHigh">Highest price</option>
+              <option value="rating" data-i18n="sortRating">Top sellers</option>
+            </select>
+          </div>
+          <div class="course-context" id="course-context" hidden></div>
+          <div class="listing-grid" id="listing-grid"></div>
+          <p class="empty-state" id="empty-state" hidden data-i18n="emptyState">No books match those filters yet.</p>
+        </section>
+      </section>
+
+      <section id="sell-view" class="view" aria-labelledby="sell-title">
+        <div class="form-panel">
+          <div>
+            <p class="eyebrow" data-i18n="createListing">Create listing</p>
+            <h2 id="sell-title" data-i18n="sellTitle">Sell a syllabus book</h2>
+            <p class="supporting-text" data-i18n="sellIntro">Add the course code, condition, price, and where you prefer to meet.</p>
+          </div>
+
+          <form id="sell-form" class="sell-form">
+            <label>
+              <span data-i18n="courseCode">Course code</span>
+              <input name="course" list="course-options" required placeholder="IN1000" />
+            </label>
+            <datalist id="course-options"></datalist>
+
+            <label>
+              <span data-i18n="bookTitle">Book title</span>
+              <input name="title" required placeholder="How to Design Programs" />
+            </label>
+
+            <label>
+              <span data-i18n="author">Author</span>
+              <input name="author" required placeholder="Author name" />
+            </label>
+
+            <label>
+              <span data-i18n="editionYear">Edition/year</span>
+              <input name="edition" required placeholder="3rd edition, 2023" />
+            </label>
+
+            <label>
+              <span data-i18n="priceNok">Price in NOK</span>
+              <input name="price" inputmode="numeric" pattern="[0-9]+" required placeholder="350" />
+            </label>
+
+            <label>
+              <span data-i18n="filterCondition">Condition</span>
+              <select name="condition" required>
+                <option value="" data-i18n="chooseCondition">Choose condition</option>
+                <option value="Like new" data-condition-label="Like new">Like new</option>
+                <option value="Used" data-condition-label="Used">Used</option>
+                <option value="Heavily used" data-condition-label="Heavily used">Heavily used</option>
+              </select>
+            </label>
+
+            <label>
+              <span data-i18n="pickupArea">Pickup area</span>
+              <select name="pickup" required>
+                <option value="" data-i18n="choosePickup">Choose pickup area</option>
+                <option>Blindern</option>
+                <option>Sentrum</option>
+                <option>Domus Juridica</option>
+                <option>Forskningsparken</option>
+              </select>
+            </label>
+
+            <label class="wide">
+              <span data-i18n="sellerNote">Seller note</span>
+              <textarea name="note" rows="4" placeholder="No markings, can meet after lectures on Tuesdays."></textarea>
+            </label>
+
+            <button class="primary-button wide" type="submit" data-i18n="publishListing">Publish listing</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="dashboard-view" class="view" aria-labelledby="dashboard-title">
+        <div class="dashboard-shell">
+          <div class="dashboard-intro">
+            <p class="eyebrow" data-i18n="sellerDashboard">Seller dashboard</p>
+            <h2 id="dashboard-title" data-i18n="navDashboard">My listings</h2>
+            <p class="supporting-text" data-i18n="dashboardIntro">Track availability and see student interest across your active listings.</p>
+          </div>
+          <div class="dashboard-grid" id="dashboard-grid"></div>
+        </div>
+      </section>
+
+      <section id="favorites-view" class="view" aria-labelledby="favorites-title">
+        <div class="favorites-shell">
+          <div class="dashboard-intro">
+            <p class="eyebrow" data-i18n="favoritesEyebrow">Saved books</p>
+            <h2 id="favorites-title" data-i18n="navFavorites">My favourites</h2>
+            <p class="supporting-text" data-i18n="favoritesIntro">Keep an overview of books you want to compare later.</p>
+          </div>
+          <div class="favorites-grid" id="favorites-grid"></div>
+          <p class="empty-state" id="favorites-empty" hidden data-i18n="favoritesEmpty">No favourite books yet.</p>
+        </div>
+      </section>
+
+      <section id="messages-view" class="view" aria-labelledby="messages-title">
+        <div class="messages-shell">
+          <div class="dashboard-intro">
+            <p class="eyebrow" data-i18n="messagesEyebrow">Buyer flow</p>
+            <h2 id="messages-title" data-i18n="navMessages">Messages</h2>
+            <p class="supporting-text" data-i18n="messagesIntro">Track mock seller conversations and reservation requests.</p>
+          </div>
+          <div class="message-grid" id="message-grid"></div>
+          <p class="empty-state" id="messages-empty" hidden data-i18n="messagesEmpty">No messages or reservations yet.</p>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="detail-dialog">
+      <article class="detail-card" id="detail-card"></article>
+    </dialog>
+
+    <dialog id="contact-dialog">
+      <form method="dialog" class="contact-card">
+        <button class="icon-button close-button" value="close" aria-label="Close message dialog">x</button>
+        <p class="eyebrow" data-i18n="messageSeller">Message seller</p>
+        <h2 id="contact-title">Contact seller</h2>
+        <label>
+          <span data-i18n="message">Message</span>
+          <textarea rows="5" id="message-template"></textarea>
+        </label>
+        <div class="contact-actions">
+          <button class="primary-button" value="sent" data-i18n="sendMockMessage">Send mock message</button>
+          <button class="secondary-button" value="reserve" data-i18n="reserveBook">Request reservation</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js?v=20260520-stat-labels-no"></script>
+  </body>
+</html>
